@@ -51,7 +51,6 @@ pipeline {
                     docker stop ${CONTAINER_NAME} || true
                     docker rm ${CONTAINER_NAME} || true
                     
-                    # INI ADALAH PERBAIKANNYA (Port 8081)
                     docker run -d -p 8081:8080 \
                         --name ${CONTAINER_NAME} \
                         ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}
