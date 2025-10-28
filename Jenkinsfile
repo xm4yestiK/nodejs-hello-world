@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS-18'
+        nodejs 'NodeJS-18' // Pastikan namanya sama di Manage Jenkins > Tools
     }
 
     environment {
@@ -48,11 +48,11 @@ pipeline {
             steps {
                 echo "Deploying new image to server..."
                 sh '''
-                    # INI PERBAIKANNYA (menggunakan variabel $CONTAINER_NAME)
                     docker stop ${CONTAINER_NAME} || true
                     docker rm ${CONTAINER_NAME} || true
                     
-                    docker run -d -p 8080:8080 \
+                    # INI ADALAH PERBAIKANNYA (Port 8081)
+                    docker run -d -p 8081:8080 \
                         --name ${CONTAINER_NAME} \
                         ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}
                 '''
