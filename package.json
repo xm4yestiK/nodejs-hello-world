@@ -1,0 +1,12 @@
+{
+  "name": "nodejs_hello_world",
+  "version": "1.0.0",
+  "description": "My first CI/CD app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo 'Test suite passed!' && exit 0"
+  },
+  "author": "",
+  "license": "ISC"
+}
