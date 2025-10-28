@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS-18'
+    }
+
     environment {
         DOCKER_IMAGE_NAME = "vitoackerman/nodejs_hello_world"
         DOCKER_CREDENTIAL_ID = "dockerhub-creds"
@@ -33,6 +37,7 @@ pipeline {
         stage('4. Push Docker Image') {
             steps {
                 echo 'Pushing image to Docker Hub...'
+                // INI PERBAIKAN DARI ERROR SEBELUMNYA
                 withDockerRegistry(credentialsId: env.DOCKER_CREDENTIAL_ID, url: 'https://index.docker.io/v1/') {
                     sh "docker push ${env.DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
