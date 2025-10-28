@@ -8,6 +8,7 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = "vitoackerman/nodejs_hello_world"
         DOCKER_CREDENTIAL_ID = "dockerhub-creds"
+        CONTAINER_NAME = "nodejs_hello_world"
     }
 
     stages {
@@ -37,24 +38,31 @@ pipeline {
         stage('4. Push Docker Image') {
             steps {
                 echo 'Pushing image to Docker Hub...'
-                // INI PERBAIKAN DARI ERROR SEBELUMNYA
                 withDockerRegistry(credentialsId: env.DOCKER_CREDENTIAL_ID, url: 'https://index.docker.io/v1/') {
                     sh "docker push ${env.DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
 
-        stage('5. Deploy (Simulated)') {
+        stage('5. Deploy') {
             steps {
-                echo "SIMULASI: Deploying image ${env.DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} to production."
+                echo "Deploying new image to server..."
+                sh '''
+                    # INI PERBAIKANNYA (menggunakan variabel $CONTAINER_NAME)
+                    docker stop ${CONTAINER_NAME} || true
+                    docker rm ${CONTAINER_NAME} || true
+                    
+                    docker run -d -p 8080:8080 \
+                        --name ${CONTAINER_NAME} \
+                        ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}
+                '''
             }
         }
     }
     
     post {
         always {
-            echo 'Cleaning up local Docker images...'
-            sh "docker rmi ${env.DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+            echo "Build finished."
         }
     }
 }
