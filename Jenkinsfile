@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS-18' // Pastikan namanya sama di Manage Jenkins > Tools
+        nodejs 'NodeJS-18'
     }
 
     environment {
@@ -61,7 +61,8 @@ pipeline {
     
     post {
         always {
-            echo "Build finished."
+            echo "Build finished. Cleaning up old Docker images..."
+            sh "docker image prune -a -f"
         }
     }
 }
