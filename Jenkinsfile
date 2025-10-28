@@ -33,7 +33,8 @@ pipeline {
         stage('4. Push Docker Image') {
             steps {
                 echo 'Pushing image to Docker Hub...'
-                withDockerRegistry(credentialsId: env.DOCKER_CREDENTIAL_ID) {
+                // INI ADALAH PERBAIKANNYA
+                withDockerRegistry(credentialsId: env.DOCKER_CREDENTIAL_ID, url: 'https://index.docker.io/v1/') {
                     sh "docker push ${env.DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
